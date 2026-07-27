@@ -1,0 +1,35 @@
+# Triển khai TamThai Smart PWA
+
+## Phương án A — GitHub Pages (nhanh để xem giao diện)
+
+1. Tạo repository mới, ví dụ `tamthai-smart-pwa`.
+2. Tải toàn bộ nội dung thư mục này lên repository.
+3. Trong **Settings → Pages**, chọn nhánh `main` và thư mục `/ (root)`, sau đó lưu.
+4. Mở URL Pages được GitHub cung cấp trên điện thoại qua HTTPS.
+
+## Phương án B — Google Apps Script Web App (khi bắt đầu có backend)
+
+1. Tạo Apps Script project độc lập.
+2. Tạo một HTML file và đưa nội dung giao diện vào project. Khi chuyển sang Apps Script, dùng `HtmlService` để trả trang và thay các đường dẫn tĩnh bằng URL tài nguyên Apps Script phù hợp.
+3. Triển khai **Web app** với quyền truy cập phù hợp; để người dân xem thử, chọn quyền công khai theo chính sách đơn vị.
+4. Chỉ backend Apps Script được phép đọc Script Properties và gọi Claude/Zalo/Google Sheets.
+
+> Khuyến nghị: Sprint 01 dùng GitHub Pages hoặc Firebase Hosting cho giao diện. Apps Script đảm nhiệm API từ Sprint 02 để giảm độ phức tạp của việc phục vụ asset và tránh lộ bí mật.
+
+## Kiểm tra trước khi bàn giao
+
+- Mở URL qua HTTPS trên Android và iPhone.
+- Splash chuyển sang Welcome ở lần đầu, sau đó vào Home.
+- Kiểm tra thanh điều hướng và nút đổi giao diện.
+- Thử tắt mạng sau lần truy cập đầu: app shell vẫn mở được.
+- Kiểm tra nút cài ứng dụng trên trình duyệt hỗ trợ PWA.
+
+## Kết nối backend sau này
+
+Khai báo URL web app Apps Script tại `assets/js/config.js`:
+
+```js
+APPS_SCRIPT_API_BASE_URL: 'https://script.google.com/macros/s/<DEPLOYMENT_ID>/exec'
+```
+
+Frontend chỉ gọi các endpoint dữ liệu công khai hoặc endpoint có cơ chế xác thực đã được phê duyệt. Không thêm `ANTHROPIC_API_KEY`, Zalo access token, refresh token hay App Secret vào bất kỳ tệp frontend nào.
